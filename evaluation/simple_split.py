@@ -1,5 +1,5 @@
 from sklearn.pipeline import Pipeline
-from simple_split import compute_metrics, combine_metrics
+from .simple_split import compute_metrics, combine_metrics
 
 def simple_split(model_class, params, preprocessor_steps, df):
     X = df.copy()
