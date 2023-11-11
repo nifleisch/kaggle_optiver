@@ -14,5 +14,5 @@ class AddGaussianNoise(BaseEstimator, TransformerMixin):
         non_numeric_features = ["stock_id","date_id", "seconds_in_bucket","time_id", "row_id"] 
         for column in df.columns:
           if column not in non_numeric_features:
-            df[column] += np.random.normal(0,df_noise_scale[column], [df.shape[0],])
+            df[column] += np.random.normal(0,self.df_noise_scale[column], [df.shape[0],])
         return df
