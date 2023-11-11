@@ -1,5 +1,5 @@
 from sklearn.base import BaseEstimator, TransformerMixin
-
+import numpy as np
 
 class AddGaussianNoise(BaseEstimator, TransformerMixin):
 
