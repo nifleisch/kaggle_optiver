@@ -6,7 +6,7 @@ class StatisticFeatures(BaseEstimator, TransformerMixin):
 
     def __init__(self):
         self.features = [
-            "matched_size",
+            #"matched_size", #kurt hat Wert inf
             "bid_size",
             "ask_size",
             "imbalance_size",
