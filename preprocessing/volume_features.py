@@ -13,7 +13,7 @@ class VolumeFeatures(BaseEstimator, TransformerMixin):
 
     def transform(self, df):
         df["volume"] = df.eval("ask_size + bid_size")
-        df["depth_pressure"] = (df["ask_size"] - df["bid_size"]) * (df["far_price"] - df["near_price"])
+        df["depth_pressure"] = (df["ask_size"] - df["bid_size"]) * (df["far_price"] - df["near_price"]) #Ist bereits in price_features
         df["imbalance"] = df["imbalance_size"] * df["imbalance_buy_sell_flag"]
         df["liquidity_imbalance"] = df.eval("(bid_size-ask_size)/(bid_size+ask_size)")
         df["matched_imbalance"] = df.eval("(imbalance_size-matched_size)/(matched_size+imbalance_size)")
