@@ -26,7 +26,8 @@ class StatisticFeatures(BaseEstimator, TransformerMixin):
                 self.avg_values[f"all_{feature}_{statistic}"] = df[feature].agg(
                     statistic
                 )
-
+        return self
+        
     def transform(self, df):
         for key, value in self.avg_values.items():
             df[key] = value
