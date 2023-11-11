@@ -5,3 +5,4 @@ from .volume_features import VolumeFeatures
 from .time_features import TimeFeatures
 from .price_features import PriceFeatures
 from .shrink_features import ShrinkFeatures
+from .fill_nan_features import FillNanFeatures
