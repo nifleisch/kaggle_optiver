@@ -1,4 +1,4 @@
-from sklearn.model_selection import GroupKFold
+from sklearn.model_selection import KFold
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error
 from tqdm import tqdm
@@ -12,9 +12,9 @@ def eight_fold_cv(model_class, params, preprocessor_steps, df):
     X.dropna(subset = ['target'], inplace=True)
     y = X.pop('target')
     metrics_list = []
-    gfk = GroupKFold(n_splits=8)
+    kf = KFold(n_splits=8, shuffle=False)
 
-    for train_index, test_index in tqdm(gfk.split(X, y, groups=X['date_id'])):
+    for train_index, test_index in tqdm(kf.split(X)):
         X_train, X_test = X.iloc[train_index].copy(), X.iloc[test_index].copy()
         y_train, y_test = y.iloc[train_index], y.iloc[test_index]
         preprocessor = Pipeline(preprocessor_steps)
