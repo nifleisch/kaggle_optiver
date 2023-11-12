@@ -1,1 +1,1 @@
-from .eight_fold_cv import eight_fold_cv
+from .eight_fold_cv import eight_fold_cv, simple_split
