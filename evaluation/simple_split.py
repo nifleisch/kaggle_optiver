@@ -17,7 +17,7 @@ def simple_split(model_class, params, preprocessor_steps, df):
     X_train_processed = preprocessor.fit_transform(X_train)
     X_test_processed = preprocessor.transform(X_test)
 
-    model = model_class(params)
+    model = model_class(**params)
     model.fit(X_train_processed, y_train)
 
     X_train['y_hat'] = model.predict(X_train_processed)
@@ -72,9 +72,9 @@ def combine_metrics(metrics_list):
                     )
     metric_dict['train_mae'] = np.array(train_maes).mean()
     metric_dict['test_mae'] = np.array(test_maes).mean()
-    metric_dict['train_median'] = np.median(np.array(train_maes))
+    metric_dict['train_mae_median'] = np.median(np.array(train_maes))
     metric_dict['train_mae_std'] = np.array(train_maes).std()
-    metric_dict['test_median'] = np.median(np.array(test_maes))
+    metric_dict['test_mae_median'] = np.median(np.array(test_maes))
     metric_dict['test_mae_std'] = np.array(test_maes).std()
     metric_dict['test_prediction_mean'] = residual_df['y_hat'].mean()
     metric_dict['test_prediction_std'] = residual_df['y_hat'].std()
