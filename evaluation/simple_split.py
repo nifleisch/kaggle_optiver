@@ -17,7 +17,7 @@ def simple_split(model_class, params, preprocessor_steps, df):
     X_train_processed = preprocessor.fit_transform(X_train)
     X_test_processed = preprocessor.transform(X_test)
 
-    model = model_class(**params)
+    model = model_class(params)
     model.fit(X_train_processed, y_train)
 
     X_train['y_hat'] = model.predict(X_train_processed)
