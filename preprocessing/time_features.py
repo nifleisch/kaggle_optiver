@@ -11,6 +11,7 @@ class TimeFeatures(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, df):
+        df["week_id"] = df["date_id"] // 5
         df["dow"] = df["date_id"] % 5
         df["seconds"] = df["seconds_in_bucket"] % 60
         df["minute"] = df["seconds_in_bucket"] // 60
