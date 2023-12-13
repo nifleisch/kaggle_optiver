@@ -10,6 +10,6 @@ class HistoricFeatures(BaseEstimator, TransformerMixin):
 
     def transform(self, df):
         for i in range(5):
-            df[f"last_week_+{i}_target"] = df.groupby(['stock_id'])['target'].shift(5 + i)
+            df[f"target_lag_{5+i}"] = df.groupby(['stock_id'])['target'].shift(5 + i)
       
         return df
