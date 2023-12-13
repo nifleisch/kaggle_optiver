@@ -7,3 +7,4 @@ from .price_features import PriceFeatures
 from .shrink_features import ShrinkFeatures
 from .fill_nan_features import FillNanFeatures
 from .add_gaussian import AddGaussianNoise
+from .volatility_features import VolatilityFeatures
