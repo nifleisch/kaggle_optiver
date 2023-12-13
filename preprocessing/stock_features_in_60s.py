@@ -10,24 +10,24 @@ class StockFeaturesIn60s(BaseEstimator, TransformerMixin):
         self.agg_df = (df
                         .groupby(['stock_id', 'seconds_in_bucket'])
                         .agg(
-                            matched_size_stock_mean_60s=('matched_size_60s', 'mean'),
-                            bid_size_stock_mean_60s=('bid_size_60s', 'mean'),
-                            ask_size_stock_mean_60s=('ask_size_60s', 'mean'),
-                            imbalance_size_stock_mean_60s=('imbalance_size_60s', 'mean'),
-                            imbalance_change_stock_mean_60s=('imbalance_change_60s', 'mean'),
-                            matched_size_stock_median_60s=('matched_size_60s', 'median'),
-                            bid_size_stock_median_60s=('bid_size_60s', 'median'),
-                            ask_size_stock_median_60s=('ask_size_60s', 'median'),
-                            imbalance_size_stock_median_60s=('imbalance_size_60s', 'median'),
-                            matched_size_wap_median_60s=('wap_60s', 'median'),
-                            bid_size_wap_median_60s=('wap_60s', 'median'),
-                            ask_size_wap_median_60s=('wap_60s', 'median'),
-                            imbalance_size_wap_median_60s=('wap_60s', 'median'),
-                            matched_size_stock_std_60s=('matched_size_60s', 'std'),
-                            bid_size_stock_std_60s=('bid_size_60s', 'std'),
-                            ask_size_stock_std_60s=('ask_size_60s', 'std'),
-                            imbalance_size_stock_std_60s=('imbalance_size_60s', 'std'),
-                            imbalance_change_stock_std_60s=('imbalance_change_60s', 'std')
+                            matched_size_stock_mean_60s=('matched_size', 'mean'),
+                            bid_size_stock_mean_60s=('bid_size', 'mean'),
+                            ask_size_stock_mean_60s=('ask_size', 'mean'),
+                            imbalance_size_stock_mean_60s=('imbalance_size', 'mean'),
+                            imbalance_change_stock_mean_60s=('imbalance_change', 'mean'),
+                            matched_size_stock_median_60s=('matched_size', 'median'),
+                            bid_size_stock_median_60s=('bid_size', 'median'),
+                            ask_size_stock_median_60s=('ask_size', 'median'),
+                            imbalance_size_stock_median_60s=('imbalance_size', 'median'),
+                            matched_size_wap_median_60s=('wap', 'median'),
+                            bid_size_wap_median_60s=('wap', 'median'),
+                            ask_size_wap_median_60s=('wap', 'median'),
+                            imbalance_size_wap_median_60s=('wap', 'median'),
+                            matched_size_stock_std_60s=('matched_size', 'std'),
+                            bid_size_stock_std_60s=('bid_size', 'std'),
+                            ask_size_stock_std_60s=('ask_size', 'std'),
+                            imbalance_size_stock_std_60s=('imbalance_size', 'std'),
+                            imbalance_change_stock_std_60s=('imbalance_change', 'std')
                         )
                         .shift(-6)
                         .reset_index())
