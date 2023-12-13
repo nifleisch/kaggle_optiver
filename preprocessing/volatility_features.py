@@ -10,6 +10,7 @@ class VolatilityFeatures(BaseEstimator, TransformerMixin):
         self.agg_df_weekly = None
 
     def fit(self, df, y=None):
+        print(df)
         df_total = (df.groupby('stock_id').agg(std_target_total = ('target', 'std'),).reset_index()) 
         df_daily = (df.groupby(['stock_id', 'date_id']).agg(std_target_daily = ('target', 'std')).reset_index()
                     ).groupby('stock_id').agg(std_target_daily = ('std_target_daily', 'mean')).reset_index()
