@@ -13,17 +13,13 @@ def eight_fold_cv(model_class, params, preprocessor_steps, df):
     #y = X.pop('target')
     metrics_list = []
     kf = KFold(n_splits=8, shuffle=False)
-    
-    print(X['target'])
     for train_index, test_index in tqdm(kf.split(X)):
         X_train, X_test = X.iloc[train_index].copy(), X.iloc[test_index].copy()
         #y_train, y_test = y.iloc[train_index], y.iloc[test_index]
         preprocessor = Pipeline(preprocessor_steps)
-        print(X_train['target'])
-
         X_train_processed = preprocessor.fit_transform(X_train)
         X_test_processed = preprocessor.transform(X_test)
-        y_train, y_test = X_train_processed.pop('target'), X_test_processed.pop('target')
+        y_train, y_test = X_train_processed.pop('target'), X_test_processed.pop('target') #pushed it further back to enable volatilty features in pipeline
         model = model_class(params)
         model.fit(X_train_processed, y_train)
 
