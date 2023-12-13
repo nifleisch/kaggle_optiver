@@ -14,6 +14,7 @@ class StockFeatures(BaseEstimator, TransformerMixin):
                             bid_size_stock_mean = ('bid_size', 'mean'),
                             ask_size_stock_mean = ('ask_size', 'mean'),
                             imbalance_size_stock_mean = ('imbalance_size', 'mean'),
+                            imbalance_change_stock_mean = ('imbalance_change', 'mean'),
                             matched_size_stock_median = ('matched_size', 'median'), 
                             bid_size_stock_median = ('bid_size', 'median'),
                             ask_size_stock_median = ('ask_size', 'median'),
@@ -26,6 +27,7 @@ class StockFeatures(BaseEstimator, TransformerMixin):
                             bid_size_stock_std = ('bid_size', 'std'),
                             ask_size_stock_std = ('ask_size', 'std'),
                             imbalance_size_stock_std = ('imbalance_size', 'std'),
+                            imbalance_change_stock_std = ('imbalance_change', 'std'),
                             )
                         .reset_index())
         return self
