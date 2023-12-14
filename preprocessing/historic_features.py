@@ -10,6 +10,12 @@ class HistoricFeatures(BaseEstimator, TransformerMixin):
 
     def transform(self, df):
         for i in range(5):
-            df[f"target_lag_{5+i}"] = df.groupby(['stock_id'])['target'].shift(5 + i)
-      
+            #Mit Nils besprechen, nicht möglich für train/test set split,
+            #aber mit daten von letzter Woche wie bei Abgabe möglich
+            #to add:
+            #volatility last week
+            #targets last week
+            #global features last week
+            pass
+
         return df
