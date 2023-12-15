@@ -1,3 +1,4 @@
+
 from sklearn.model_selection import KFold
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error
@@ -7,7 +8,7 @@ import numpy as np
 import gc
 
 
-def eight_fold_cv(model_class, params, preprocessor_steps, df):
+def eight_fold_cv(model_class, params, preprocessor_steps, df, split = None):
     X = df.copy()
     X.dropna(subset = ['target'], inplace=True)
     #y = X.pop('target')
@@ -19,12 +20,20 @@ def eight_fold_cv(model_class, params, preprocessor_steps, df):
         preprocessor = Pipeline(preprocessor_steps)
         X_train_processed = preprocessor.fit_transform(X_train)
         X_test_processed = preprocessor.transform(X_test)
+
+        X_train_processed.pop('date_id')
+        X_test_processed.pop('date_id') #pop after calculation of Transforms (needed for weekly volatility)
+        
         y_train, y_test = X_train_processed.pop('target'), X_test_processed.pop('target') #pushed it further back to enable volatilty features in pipeline
-        model = model_class(params)
+        if split is not None:
+          model = model_class(params, split)
+        else:
+          model = model_class(params)
         model.fit(X_train_processed, y_train)
 
         X_train['y_hat'] = model.predict(X_train_processed)
         X_test['y_hat'] = model.predict(X_test_processed)
+
         metrics = compute_metrics(X_train, y_train, X_test, y_test)
         metrics_list.append(metrics)
         del X_train, X_test, X_train_processed, X_test_processed
@@ -36,7 +45,7 @@ def compute_metrics(X_train, y_train, X_test, y_test, fold=0):
     metrics = {}
     metrics['train_mae'] = mean_absolute_error(y_train, X_train['y_hat'])
     metrics['test_mae'] = mean_absolute_error(y_test, X_test['y_hat'])
-    
+
     X_test['fold'] = fold
     X_test['residual'] = X_test['y_hat'] - y_test
     X_test['abs_residual'] = X_test['residual'].abs()
