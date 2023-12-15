@@ -16,6 +16,9 @@ def simple_split(model_class, params, preprocessor_steps, df):
     X_train_processed = preprocessor.fit_transform(X_train)
     X_test_processed = preprocessor.transform(X_test)
 
+    X_train_processed.pop('date_id')
+    X_test_processed.pop('date_id')
+
     y_train = X_train_processed.pop('target')
     y_test = X_test_processed.pop('target')
 
@@ -25,8 +28,15 @@ def simple_split(model_class, params, preprocessor_steps, df):
     X_train['y_hat'] = model.predict(X_train_processed)
     X_test['y_hat'] = model.predict(X_test_processed)
 
+
+    gain_importance = model.model.feature_importances_
+
+    # Display feature importance with feature names
+    feature_names = X_train_processed.columns
+    gain_importance_df = pd.DataFrame({'Feature': feature_names, 'Gain': gain_importance})
+
     metrics = compute_metrics(X_train, y_train, X_test, y_test)
-    return combine_metrics([metrics])
+    return combine_metrics([metrics]), gain_importance_df
 
 
 def compute_metrics(X_train, y_train, X_test, y_test, fold=0):
