@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 
-def simple_split(model_class, params, preprocessor_steps, df):
+def simple_split(model_class, params, preprocessor_steps, df, split = None):
     X = df.copy()
     X = X.dropna(subset = ['target'])
 
@@ -22,7 +22,10 @@ def simple_split(model_class, params, preprocessor_steps, df):
     y_train = X_train_processed.pop('target')
     y_test = X_test_processed.pop('target')
 
-    model = model_class(params)
+    if split is not None:
+          model = model_class(params, split)
+    else:
+        model = model_class(params)
     model.fit(X_train_processed, y_train)
 
     X_train['y_hat'] = model.predict(X_train_processed)
