@@ -36,17 +36,10 @@ def simple_split(model_class, params, preprocessor_steps, df, split = None):
     X_train['y_hat'] = model.predict(X_train_processed)
     X_test['y_hat'] = model.predict(X_test_processed)
 
-    #Fallunterscheidung falls model mehrere Modelle hat
-    gain_importance_df = []
-    for moedel in model.model:
-        if hasattr(moedel, 'feature_importances_'):
-            gain_importance = moedel.feature_importances_
-            # Display feature importance with feature names
-            feature_names = X_train_processed.columns
-            gain_importance_df.append(pd.DataFrame({'Feature': feature_names, 'Gain': gain_importance}))
+    
     
     metrics = compute_metrics(X_train, y_train, X_test, y_test)
-    return combine_metrics([metrics]), gain_importance_df
+    return combine_metrics([metrics]), model
 
 
 def compute_metrics(X_train, y_train, X_test, y_test, fold=0):
