@@ -16,6 +16,11 @@ def simple_split(model_class, params, preprocessor_steps, df, split = None):
     X_train_processed = preprocessor.fit_transform(X_train)
     X_test_processed = preprocessor.transform(X_test)
 
+
+    X_train_processed.index = X_train.index
+    X_test_processed.index = X_test.index
+
+
     X_train_processed.pop('date_id')
     X_test_processed.pop('date_id')
 
