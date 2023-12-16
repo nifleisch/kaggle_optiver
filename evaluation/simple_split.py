@@ -57,8 +57,8 @@ def compute_metrics(X_train, y_train, X_test, y_test, fold=0):
     X_test['fold'] = fold
     X_test['residual'] = X_test['y_hat'] - y_test
     X_test['abs_residual'] = X_test['residual'].abs()
-
-    metrics['residual_df'] = X_test.loc[:, ['fold', 'stock_id', 'seconds_in_bucket', 'y_hat', 'residual', 'abs_residual']].copy()
+    X_test['target'] = y_test
+    metrics['residual_df'] = X_test.loc[:, ['fold', 'stock_id', 'seconds_in_bucket', 'y_hat', 'residual', 'abs_residual', 'target']].copy()
     return metrics
 
 
@@ -79,7 +79,9 @@ def combine_metrics(metrics_list):
                       .agg(
                           prediction = ('y_hat', 'median'),
                           residual = ('residual', 'median'),
-                          abs_residual = ('abs_residual', 'median')
+                          abs_residual = ('abs_residual', 'median'),
+                            target = ('target', 'median')
+
                       )
                       .reset_index()
                     )
@@ -88,7 +90,8 @@ def combine_metrics(metrics_list):
                       .agg(
                           prediction = ('y_hat', 'median'),
                           residual = ('residual', 'median'),
-                          abs_residual = ('abs_residual', 'median')
+                          abs_residual = ('abs_residual', 'median'),
+                          target = ('target', 'median')
                       )
                       .reset_index()
                     )
