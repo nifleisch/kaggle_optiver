@@ -36,7 +36,7 @@ def simple_split(model_class, params, preprocessor_steps, df, split = None):
     X_train['y_hat'] = model.predict(X_train_processed)
     X_test['y_hat'] = model.predict(X_test_processed)
 
-    
+
     
     metrics = compute_metrics(X_train, y_train, X_test, y_test)
     return combine_metrics([metrics]), model

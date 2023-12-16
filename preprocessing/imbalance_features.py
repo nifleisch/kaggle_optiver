@@ -16,9 +16,20 @@ class ImbalanceFeatures(BaseEstimator, TransformerMixin):
         pass
 
     def fit(self, df, y=None):
+        self.global_stock_id_feats = {
+        "median_size": df.groupby("stock_id")["bid_size"].median() + df.groupby("stock_id")["ask_size"].median(),
+        "std_size": df.groupby("stock_id")["bid_size"].std() + df.groupby("stock_id")["ask_size"].std(),
+        "ptp_size": df.groupby("stock_id")["bid_size"].max() - df.groupby("stock_id")["bid_size"].min(),
+        "median_price": df.groupby("stock_id")["bid_price"].median() + df.groupby("stock_id")["ask_price"].median(),
+        "std_price": df.groupby("stock_id")["bid_price"].std() + df.groupby("stock_id")["ask_price"].std(),
+        "ptp_price": df.groupby("stock_id")["bid_price"].max() - df.groupby("stock_id")["ask_price"].min(),
+    }
+        
         return self
     
     def transform(self, df):
+        for key, value in self.global_stock_id_feats.items():
+            df[f"global_{key}"] = df["stock_id"].map(value.to_dict())
         df = imbalance_features(df)
         return df
 
@@ -29,14 +40,6 @@ def imbalance_features(df):
     prices = ["reference_price", "far_price", "near_price", "ask_price", "bid_price", "wap"]
     sizes = ["matched_size", "bid_size", "ask_size", "imbalance_size"]
     
-    df["volume"] = df.eval("ask_size + bid_size")
-    df["mid_price"] = df.eval("(ask_price + bid_price) / 2")
-    df["liquidity_imbalance"] = df.eval("(bid_size-ask_size)/(bid_size+ask_size)")
-    df["matched_imbalance"] = df.eval("(imbalance_size-matched_size)/(matched_size+imbalance_size)")
-    df["size_imbalance"] = df.eval("bid_size / ask_size")
-
-    for c in combinations(prices, 2):
-        df[f"{c[0]}_{c[1]}_imb"] = df.eval(f"({c[0]} - {c[1]})/({c[0]} + {c[1]})")
 
   
     df["liquidity_imbalance"] = df.eval("(bid_size-ask_size)/(bid_size+ask_size)")
