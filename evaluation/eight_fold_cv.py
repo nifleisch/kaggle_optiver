@@ -21,6 +21,9 @@ def eight_fold_cv(model_class, params, preprocessor_steps, df, split = None):
         X_train_processed = preprocessor.fit_transform(X_train)
         X_test_processed = preprocessor.transform(X_test)
 
+        X_train_processed.index = X_train.index
+        X_test_processed.index = X_test.index
+
         X_train_processed.pop('date_id')
         X_test_processed.pop('date_id') #pop after calculation of Transforms (needed for weekly volatility)
         
@@ -49,7 +52,7 @@ def compute_metrics(X_train, y_train, X_test, y_test, fold=0):
     X_test['fold'] = fold
     X_test['residual'] = X_test['y_hat'] - y_test
     X_test['abs_residual'] = X_test['residual'].abs()
-
+    X_test['target'] = y_test
     metrics['residual_df'] = X_test.loc[:, ['fold', 'stock_id', 'seconds_in_bucket', 'y_hat', 'residual', 'abs_residual']].copy()
     return metrics
 
