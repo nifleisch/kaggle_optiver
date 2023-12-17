@@ -25,19 +25,3 @@ class TSNEFeatures(BaseEstimator, TransformerMixin):
         return result_df
 
 
-
-
-
-# Create synthetic data: n vectors as numpy arrays
-n = 200
-input_data = X_train_processed.groupby('stock_id').median()
-
-
-tsne = TSNE(n_components=3)
-embedded_data = tsne.fit(input_data)
-
-unique_stock_ids = df['stock_id'].unique()
-vector_df = pd.DataFrame(embedded_data)
-vector_df['stock_id'] = vector_df.index
-# Merge the original DataFrame with the vector DataFrame based on stock_id
-result_df = pd.merge(df, vector_df, on='stock_id', how='left')
