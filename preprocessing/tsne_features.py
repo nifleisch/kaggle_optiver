@@ -17,7 +17,7 @@ class TSNEFeatures(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, df):
-        embedded_data = self.tsne_trained.transform(df.drop(columns=['target']))
+        embedded_data = self.tsne_trained.transform(df)
         vector_df = pd.DataFrame(embedded_data)
         vector_df['stock_id'] = vector_df.index
         # Merge the original DataFrame with the vector DataFrame based on stock_id
