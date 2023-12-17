@@ -17,6 +17,7 @@ class ImbalanceFeatures(BaseEstimator, TransformerMixin):
 
     def fit(self, df, y=None):
         self.global_stock_id_feats = {
+        
         "median_size": df.groupby("stock_id")["bid_size"].median() + df.groupby("stock_id")["ask_size"].median(),
         "std_size": df.groupby("stock_id")["bid_size"].std() + df.groupby("stock_id")["ask_size"].std(),
         "ptp_size": df.groupby("stock_id")["bid_size"].max() - df.groupby("stock_id")["bid_size"].min(),
@@ -24,12 +25,20 @@ class ImbalanceFeatures(BaseEstimator, TransformerMixin):
         "std_price": df.groupby("stock_id")["bid_price"].std() + df.groupby("stock_id")["ask_price"].std(),
         "ptp_price": df.groupby("stock_id")["bid_price"].max() - df.groupby("stock_id")["ask_price"].min(),
     }
-        
         return self
     
     def transform(self, df):
         for key, value in self.global_stock_id_feats.items():
             df[f"global_{key}"] = df["stock_id"].map(value.to_dict())
+        
+        if 'target' in df.columns:
+            X = df.drop(columns=['target']).reset_index()
+        else:
+            X = df.reset_index()
+
+        new_df = X.groupby(["date_id", "seconds_in_bucket"]).median().drop(columns=["stock_id"])
+        new_df.rename(columns={col: f'global_{col}' for col in new_df.columns}, inplace=True)
+        df = df.merge(new_df, on=["date_id", "seconds_in_bucket"], how="left")
         df = imbalance_features(df)
         return df
 
