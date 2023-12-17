@@ -2,7 +2,6 @@ from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class FillNanFeatures(BaseEstimator, TransformerMixin):
-    "Reduce Size of DataFrame."
 
     def __init__(self, method = "median"):
         self.method = method
