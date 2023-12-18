@@ -2,7 +2,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error
 import pandas as pd
 import numpy as np
-
+import lightgbm as lgb
 
 def simple_split(model_class, params, preprocessor_steps, df, split = None):
     X = df.copy()
@@ -16,7 +16,6 @@ def simple_split(model_class, params, preprocessor_steps, df, split = None):
     X_train_processed = preprocessor.fit_transform(X_train)
     X_test_processed = preprocessor.transform(X_test)
 
-
     X_train_processed.index = X_train.index
     X_test_processed.index = X_test.index
 
@@ -26,11 +25,12 @@ def simple_split(model_class, params, preprocessor_steps, df, split = None):
 
     y_train = X_train_processed.pop('target')
     y_test = X_test_processed.pop('target')
-    eval_set  = [(X_test_processed, y_test)]
+    
     if split is not None:
           model = model_class(params, split)
     else:
         model = model_class(params)
+    
     model.fit(X_train_processed, y_train, X_val = X_test, y_val = y_test)
 
     X_train['y_hat'] = model.predict(X_train_processed)
