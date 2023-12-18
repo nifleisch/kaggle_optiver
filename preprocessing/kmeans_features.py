@@ -34,7 +34,7 @@ class KMeansFeatures(BaseEstimator, TransformerMixin):
                 .apply(kmeans_transform, "wap_cluster", self.k)
                 )
         result_df = X.join([extra_df1, extra_df2])
-        return result_df
+        return result_df.drop(columns = ["index"])
     
 
 def kmeans_transform(group, cluster_name, k=3):
