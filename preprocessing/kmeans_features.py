@@ -11,36 +11,9 @@ from faiss import Kmeans
 
 class KMeansFeatures(BaseEstimator, TransformerMixin):
 
-    def __init__(self, k = 3):
+    def __init__(self, k = 3, gpu = False):
       self.k = k
-
-    def fit(self, df, y=None):
-        return self
-
-    def transform(self, df):
-        if 'target' in df.columns:
-            X = df.drop(columns=['target']).reset_index()
-        else:
-            X = df.reset_index()
-
-        extra_df1 = (
-                X
-                .groupby(['date_id', 'seconds_in_bucket'])[['stock_id','bid_price', 'bid_size', 'ask_price']]
-                .apply(kmeans_transform, "price_cluster", self.k)
-                )
-        extra_df2 = (
-                X
-                .groupby(['date_id', 'seconds_in_bucket'])[['stock_id','wap', 'matched_size']]
-                .apply(kmeans_transform, "wap_cluster", self.k)
-                )
-        result_df = X.join([extra_df1, extra_df2])
-        return result_df.drop(columns = ["index"])
-
-class KMeansFeatures(BaseEstimator, TransformerMixin):
-
-    def __init__(self, k = 3):
-      self.k = k
-
+      self.gpu = gpu
     def fit(self, df, y=None):
         return self
 
@@ -53,12 +26,12 @@ class KMeansFeatures(BaseEstimator, TransformerMixin):
         extra_df1 = (
                 X
                 .groupby(['date_id', 'seconds_in_bucket'])[['stock_id', 'bid_size', 'ask_price']]
-                .apply(kmeans_transform, "price_cluster", self.k)
+                .apply(kmeans_transform, "price_cluster", self.k, self.gpu)
                 )
         extra_df2 = (
                 X
                 .groupby(['date_id', 'seconds_in_bucket'])[['stock_id','wap', 'matched_size']]
-                .apply(kmeans_transform, "wap_cluster", self.k)
+                .apply(kmeans_transform, "wap_cluster", self.k, self.gpu)
                 )
         extra_df1.index = df.index
         extra_df2.index = df.index
