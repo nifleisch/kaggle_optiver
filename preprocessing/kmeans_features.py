@@ -26,19 +26,19 @@ class KMeansFeatures(BaseEstimator, TransformerMixin):
         extra_df1 = (
                 X
                 .groupby(['date_id', 'seconds_in_bucket'])[['stock_id','bid_price', 'bid_size', 'ask_price']]
-                .apply(kmeans_transform, "price_cluster")
+                .apply(kmeans_transform, "price_cluster", self.k)
                 )
         extra_df2 = (
                 X
                 .groupby(['date_id', 'seconds_in_bucket'])[['stock_id','wap', 'matched_size']]
-                .apply(kmeans_transform, "price_cluster")
+                .apply(kmeans_transform, "price_cluster", self.k)
                 )
         result_df = X.join([extra_df1, extra_df2])
         return result_df
     
 
-def kmeans_transform(group, cluster_name):
+def kmeans_transform(group, cluster_name, k=3):
     features = group.drop(columns=['stock_id'])
-    cluster_labels = KMeans(n_clusters=5, random_state=42).fit_predict(features)
+    cluster_labels = KMeans(n_clusters=k, random_state=42).fit_predict(features)
     result_df = pd.DataFrame({cluster_name: cluster_labels},index = group.index)
     return result_df
