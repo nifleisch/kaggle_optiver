@@ -31,7 +31,7 @@ class KMeansFeatures(BaseEstimator, TransformerMixin):
         extra_df2 = (
                 X
                 .groupby(['date_id', 'seconds_in_bucket'])[['stock_id','wap', 'matched_size']]
-                .apply(kmeans_transform, "price_cluster", self.k)
+                .apply(kmeans_transform, "wap_cluster", self.k)
                 )
         result_df = X.join([extra_df1, extra_df2])
         return result_df
