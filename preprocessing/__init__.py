@@ -12,3 +12,4 @@ from .historic_features import HistoricFeatures
 from .stock_features_in_60s import StockFeaturesIn60s
 from .imbalance_features import ImbalanceFeatures
 from .tsne_features import UMAPFeatures
+from .kmeans_features import KMeansFeatures
