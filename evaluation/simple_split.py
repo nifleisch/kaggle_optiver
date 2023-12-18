@@ -31,7 +31,7 @@ def simple_split(model_class, params, preprocessor_steps, df, split = None):
           model = model_class(params, split)
     else:
         model = model_class(params)
-    model.fit(X_train_processed, y_train, eval_set=eval_set, verbose=100)
+    model.fit(X_train_processed, y_train, X_val = X_train, y_val = y_test)
 
     X_train['y_hat'] = model.predict(X_train_processed)
     X_test['y_hat'] = model.predict(X_test_processed)
