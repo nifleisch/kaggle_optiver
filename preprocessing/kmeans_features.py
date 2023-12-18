@@ -26,12 +26,12 @@ class KMeansFeatures(BaseEstimator, TransformerMixin):
         extra_df1 = (
                 X
                 .groupby(['date_id', 'seconds_in_bucket'])[['stock_id', 'bid_size', 'ask_price']]
-                .apply(kmeans_transform, "price_cluster", self.k, self.gpu)
+                .apply(kmeans_faiss, "price_cluster", self.k, self.gpu)
                 )
         extra_df2 = (
                 X
                 .groupby(['date_id', 'seconds_in_bucket'])[['stock_id','wap', 'matched_size']]
-                .apply(kmeans_transform, "wap_cluster", self.k, self.gpu)
+                .apply(kmeans_faiss, "wap_cluster", self.k, self.gpu)
                 )
         extra_df1.index = df.index
         extra_df2.index = df.index
