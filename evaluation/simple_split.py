@@ -26,12 +26,12 @@ def simple_split(model_class, params, preprocessor_steps, df, split = None):
 
     y_train = X_train_processed.pop('target')
     y_test = X_test_processed.pop('target')
-
+    eval_set  = [(X_test_processed, y_test)]
     if split is not None:
           model = model_class(params, split)
     else:
         model = model_class(params)
-    model.fit(X_train_processed, y_train)
+    model.fit(X_train_processed, y_train, eval_set=eval_set, verbose=100)
 
     X_train['y_hat'] = model.predict(X_train_processed)
     X_test['y_hat'] = model.predict(X_test_processed)
