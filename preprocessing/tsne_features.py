@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from openTSNE import TSNE
+#from openTSNE import TSNE
 import umap
 from sklearn.base import BaseEstimator, TransformerMixin
 import numpy as np
