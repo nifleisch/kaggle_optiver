@@ -3,10 +3,10 @@ import pandas as pd
 import lightgbm as lgb
 import numpy as np
 
-class BaselineLGB():
+class BaselineLGB(OptiverModel):
     def __init__(self, params: dict, split: tuple):
-        self.model1 = lgb.LGBMRegressor()
-        self.model2 = lgb.LGBMRegressor()
+        self.model1 = lgb.LGBMRegressor(**params)
+        self.model2 = lgb.LGBMRegressor(**params)
         self.split = split
     def fit(self, X: pd.DataFrame, y: pd.Series, X_val: pd.DataFrame = None, y_val: pd.Series = None):
         #low_vol is list with stock_ids
